@@ -1,0 +1,29 @@
+<!DOCTYPE html>
+<html>
+	<head>
+		<title>AB Baseball</title>
+	</head>
+	<body>
+		<div>
+			<h1>At-Bat Baseball</h1>
+        <p>
+			    <input type="submit" id="roll12" onclick="abMaster()" value="Roll AB Die">
+
+          <input type="submit" id="roll20" onclick="hitMaster()" value="Roll Hit Die">
+        </p>
+        <p>
+          <input type="submit" id="roll4" onclick="brMaster()" value="Out Type- No Base Runners">
+
+          <input type="submit" id="roll6" onclick="br1Master()" value="Out Type- 1 Base Runner">
+
+          <input type="submit" id="roll8" onclick="br2Master()" value="Out Type- 2 Base Runners">
+
+          <input type="submit" id="roll10" onclick="br3Master()" value="Out Type- Bases Loaded">
+        </p>
+
+			<p id="outcome"> </p>
+		</div>
+
+		<script type="text/javascript" src="javascript/AB.js"></script>
+	</body>
+</html>
