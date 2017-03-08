@@ -1,8 +1,15 @@
 "use strict"
 
+function playBall(){
+  var inning = 1
+
+
+}
 /////////Master outcome functions//////////
 function brMaster(){
   var roll = getRoll4();
+
+  typeOutNoBr(roll);
 
 }
 
@@ -29,6 +36,8 @@ function abMaster(){
 
 function hitMaster(){
   var roll = getRoll20();
+
+  typeHit(roll);
 
 }
 
@@ -99,7 +108,46 @@ function atBat(roll){
   }else{
     outcome = "hit";
   }
-console.log(outcome)
+
+console.log(outcome);
 
 return outcome;
+}
+
+function typeHit(roll){
+  var roll;
+  var outcome;
+
+  if (roll <= 13){
+    outcome = "single";
+  }else if (roll <=17){
+    outcome = "double";
+  }else if (roll === 18){
+    outcome = "triple";
+  }else {
+    outcome = "homerun";
+  }
+
+  console.log(outcome);
+
+  return outcome;
+}
+
+function typeOutNoBr(roll){
+  var roll;
+  var outcome;
+
+  if(roll === 1){
+    outcome = "strikout";
+  }else if(roll === 2){
+    outcome = "pop fly";
+  }else if(roll === 3){
+    outcome = "ground out";
+  }else{
+    outcome = "line out";
+  }
+
+  console.log(outcome);
+
+  return outcome;
 }
