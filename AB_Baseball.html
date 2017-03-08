@@ -6,21 +6,24 @@
 	<body>
 		<div>
 			<h1>At-Bat Baseball</h1>
+				<p>
+					<button id="start" onclick="inningMaster()" enabled>"Play Ball!"</button>
+				</p>
         <p>
-			    <input type="submit" id="roll12" onclick="abMaster()" value="Roll AB Die">
+			    <button id="roll12" onclick="abMaster()" enabled>Roll AB Die</button>
 
-          <input type="submit" id="roll20" onclick="hitMaster()" value="Roll Hit Die">
+          <button id="roll20" onclick="hitMaster()" disabled>Roll Hit Die</button>
         </p>
         <p>
-          <input type="submit" id="roll4" onclick="brMaster()" value="Out Type- No Base Runners">
+          <button id="roll4" onclick="brMaster()" disabled>Out Type- No Base Runners</button>
 
-          <input type="submit" id="roll6" onclick="br1Master()" value="Out Type- 1 Base Runner">
+          <button id="roll6" onclick="br1Master()" disabled>Out Type- 1 Base Runner</button>
 
-          <input type="submit" id="roll8" onclick="br2Master()" value="Out Type- 2 Base Runners">
+          <button id="roll8" onclick="br2Master()" disabled>Out Type- 2 Base Runners</button>
 
-          <input type="submit" id="roll10" onclick="br3Master()" value="Out Type- Bases Loaded">
+          <button id="roll10" onclick="br3Master()"disabled>Out Type- Bases Loaded</button>
         </p>
-
+			<p id="prompt"> </p>
 			<p id="outcome"> </p>
 		</div>
 
