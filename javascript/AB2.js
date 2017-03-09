@@ -1,18 +1,39 @@
 "use strict"
+var prompt = document.getElementById("start");
+prompt.addEventListener("click", gameMaster);
+
 function gameMaster(){
   var basesTotalA = 0;
   var basesTotalB = 0;
   var inning = 0;
+  var inningBt;
 
   for(inning; inning < 9;){
-    basesTotalA = basesTotalA + inningMaster();
+    inningBt = inningMaster();
+    basesTotalA = basesTotalA + inningBt;
     inning = inning + 0.5;
     console.log("After "+inning+", "+" team A score: "+basesTotalA+", team B score: "+basesTotalB);
-    basesTotalB = basesTotalB + inningMaster();
+    document.getElementById("A"+(inning+.5)).innerHTML = inningBt;
+    inningBt = inningMaster();
+    basesTotalB = basesTotalB + inningBt;
     inning = inning + 0.5;
     console.log("After "+inning+", "+" team A score: "+basesTotalA+", team B score: "+basesTotalB);
+    document.getElementById("B"+(inning)).innerHTML = inningBt;
+    //alert("After "+inning+", "+" team A score: "+basesTotalA+", team B score: "+basesTotalB);
   }
+  document.getElementById("AF").innerHTML = basesTotalA;
+  document.getElementById("BF").innerHTML = basesTotalB;
   console.log("GAME OVER");
+  if(basesTotalA > basesTotalB){
+    console.log("Team A wins!");
+    document.getElementById("outcome").innerHTML = "Team A wins!";
+  }else if(basesTotalB > basesTotalA){
+    console.log("Team B wins!");
+    document.getElementById("outcome").innerHTML = "Team B wins!";
+  }else{
+  console.log("The game ends in a tie!")
+  document.getElementById("outcome").innerHTML = "It's a tie!";
+  }
 }
 
 function inningMaster(){
@@ -196,10 +217,8 @@ function atBat(roll){
     outcome = "hit";
     value = 2;
   }
-
   console.log("roll12: "+roll+" "+"outcome: "+outcome);
-
-return value;
+  return value;
 }
 
 function typeHit(roll){
