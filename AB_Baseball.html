@@ -2,23 +2,46 @@
 <html>
 	<head>
 		<title>AB Baseball</title>
+		<link rel="stylesheet" type="text/css" href="style.css">
 	</head>
 	<body>
 		<div>
 			<h1>At-Bat Baseball</h1>
-				<p>A fully functional baseball-style simulation that utilizes a
+				<p>A fully functional baseball-style simulation that utilizes
 						4, 6, 8, 10, 12, and 20 sided dice to determine the outcome of at-bats.
 						The goal of the game is to have the most total bases by the 9th inning.
+				</p>
+				<ul>
+					<li><strong>12-sided </strong>die determines whether an at-bat results in a <strong>hit, walk,
+						or out.</strong></li>
+					<li><strong>20-sided </strong>die determines whether a hit is a <strong>single, double, triple,
+						or homerun.</strong></li>
+					<li><strong>4-sided </strong>die determines the type of out while the batting team hasn't hit for
+						any total bases in the half-inning:<strong> strikeout, ground out, fly out, and
+						line out.</strong></li>
+					<li><strong>6-sided </strong>die determines the type of out while the batting team has hit for
+						at least 1 total base in the half-inning<strong> strikeout, ground out, fly out,
+						line out, and double play.</strong></li>
+					<li><strong>8-sided </strong>die determines the type of out while the batting team has hit for
+						at least 2 total bases in the half-inning:<strong> strikeout, ground out, fly out,
+						line out, and double play. </strong></li>
+					<li><strong>10-sided </strong>die determines the type of out while the batting team has hit for
+						at least 3 total bases in the half-inning:<strong> strikeout, ground out, fly out,
+						line out, double play, and triple play. </strong></li>
+				</ul>
+				<p>I'm working on the button functionality so you can actually "roll" to play the game.
+				</p>
+				<p>Open the console to see the roll-by-roll outcome updates for each at-bat.
 				</p>
 				<p>
 					<button id="start" enabled>Play Ball!</button>
 				</p>
-        <p>
+        <p id="abHitDice">
 			    <button id="atBat" disabled>Roll AB Die</button>
 
           <button id="roll20" disabled>Roll Hit Die</button>
         </p>
-        <p>
+        <p id="outDice">
           <button id="roll4" disabled>Out Type- No Total Bases</button>
 
           <button id="roll6" disabled>Out Type- 1 Total Base</button>
@@ -28,7 +51,7 @@
           <button id="roll10" disabled>Out Type- 3+ Total Bases</button>
         </p>
 
-			<table>
+			<table id="scoreboard">
 				<tr>
 					<th></th>
 					<th>1</th>
@@ -43,7 +66,7 @@
 					<th>FINAL</th>
 				</tr>
 				<tr>
-					<td>Team A</td>
+					<td><strong>Team A</strong></td>
 					<td id="A1"> </td>
 					<td id="A2"> </td>
 					<td id="A3"> </td>
@@ -56,7 +79,7 @@
 					<td id="AF"> </td>
 				</tr>
 				<tr>
-					<td>Team B</td>
+					<td><strong>Team B</strong></td>
 					<td id="B1"> </td>
 					<td id="B2"> </td>
 					<td id="B3"> </td>
@@ -71,7 +94,8 @@
 			</table>
 
 			<p id="prompt"> </p>
-			<p id="outcome"> </p>
+			<strong><p id="outcome"> </p></strong>
+			<p> <button id="clear" disabled> Clear </button> </p>
 		</div>
 
 		<script type="text/javascript" src="javascript/AB2.js"></script>

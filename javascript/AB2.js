@@ -1,6 +1,8 @@
-"use strict"
-var prompt = document.getElementById("start");
-prompt.addEventListener("click", gameMaster);
+"use strict";
+
+main();
+
+/////////Game and Inning functions (majority of console/html output)///////////
 
 function gameMaster(){
   var basesTotalA = 0;
@@ -34,6 +36,10 @@ function gameMaster(){
   console.log("The game ends in a tie!")
   document.getElementById("outcome").innerHTML = "It's a tie!";
   }
+  document.getElementById("clear").disabled = false;
+  document.getElementById("start").disabled = true;
+  reset();
+
 }
 
 function inningMaster(){
@@ -350,4 +356,45 @@ function typeOut3Br(roll){
 
   console.log("roll10: "+roll+" "+"outcome: "+outcome);
   return outs;
+}
+
+//////////Administrative buttons (start/clear) management//////////
+function main(){
+  var prompt = document.getElementById("start");
+  document.getElementById("start").disabled = false;
+  document.getElementById("clear").disabled = true;
+  prompt.addEventListener("click", gameMaster);
+}
+
+function reset(){
+  var prompt = document.getElementById("clear");
+  prompt.addEventListener("click", clearItems);
+}
+
+function clearItems(){
+  document.getElementById("A1").innerHTML = "";
+  document.getElementById("A2").innerHTML = "";
+  document.getElementById("A3").innerHTML = "";
+  document.getElementById("A4").innerHTML = "";
+  document.getElementById("A5").innerHTML = "";
+  document.getElementById("A6").innerHTML = "";
+  document.getElementById("A7").innerHTML = "";
+  document.getElementById("A8").innerHTML = "";
+  document.getElementById("A9").innerHTML = "";
+  document.getElementById("AF").innerHTML = "";
+  document.getElementById("B1").innerHTML = "";
+  document.getElementById("B2").innerHTML = "";
+  document.getElementById("B3").innerHTML = "";
+  document.getElementById("B4").innerHTML = "";
+  document.getElementById("B5").innerHTML = "";
+  document.getElementById("B6").innerHTML = "";
+  document.getElementById("B7").innerHTML = "";
+  document.getElementById("B8").innerHTML = "";
+  document.getElementById("B9").innerHTML = "";
+  document.getElementById("BF").innerHTML = "";
+  document.getElementById("prompt").innerHTML = "";
+  document.getElementById("outcome").innerHTML = "";
+
+  document.getElementById("start").disabled = false;
+  document.getElementById("clear").disabled = true;
 }
