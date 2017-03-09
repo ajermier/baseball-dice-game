@@ -7,15 +7,15 @@
 		<div>
 			<h1>At-Bat Baseball</h1>
 				<p>
-					<button id="start" onclick="inningMaster()" enabled>"Play Ball!"</button>
+					<button id="start" onclick="gameMaster" enabled>"Play Ball!"</button>
 				</p>
         <p>
-			    <button id="roll12" onclick="abMaster()" enabled>Roll AB Die</button>
+			    <button id="roll12" onclick="abMaster()" disabled>Roll AB Die</button>
 
           <button id="roll20" onclick="hitMaster()" disabled>Roll Hit Die</button>
         </p>
         <p>
-          <button id="roll4" onclick="brMaster()" disabled>Out Type- No Base Runners</button>
+          <button id="roll4" onclick="brEmptyMaster()" disabled>Out Type- No Base Runners</button>
 
           <button id="roll6" onclick="br1Master()" disabled>Out Type- 1 Base Runner</button>
 
@@ -27,6 +27,6 @@
 			<p id="outcome"> </p>
 		</div>
 
-		<script type="text/javascript" src="javascript/AB.js"></script>
+		<script type="text/javascript" src="javascript/AB2.js"></script>
 	</body>
 </html>

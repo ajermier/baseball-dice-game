@@ -1,51 +1,94 @@
 "use strict"
+function gameMaster(){
+  var basesTotalA = 0;
+  var basesTotalB = 0;
+  var inning = 0;
 
-//inningMaster();
+  for(inning; inning < 9;){
+    basesTotalA = basesTotalA + inningMaster();
+    inning = inning + 0.5;
+    console.log("After "+inning+", "+" team A score: "+basesTotalA+", team B score: "+basesTotalB);
+    basesTotalB = basesTotalB + inningMaster();
+    inning = inning + 0.5;
+    console.log("After "+inning+", "+" team A score: "+basesTotalA+", team B score: "+basesTotalB);
+  }
+  console.log("GAME OVER");
+}
 
-//function inningMaster(){
-//  var runsa = 0;
-//  var runsb = 0;
-//  var hitsa = 0;
-//  var hitsb = 0;
-//  var i;
-//  var outs;
+function inningMaster(){
+  var outs = 0;
+  var totalbases = 0;
+  var value;
 
-//  for (i=1; i<=18; i++){
-//    outs = 0;
-//    console.log("inning "+i);
+  for (outs; outs<3;){
+    value = abMaster(totalbases);
+    if (value < 0){
+      outs = outs + -value;
+      if(outs>3){
+        outs = 3;
+      }
+    }else{
+      totalbases = totalbases + value;
+    }
 
-//    for (out; out<3;){
-//          document.getElementById("roll12").disabled = false;
+    console.log("outs: ",outs);
+    console.log("total bases: ", totalbases);
+  }
 
-//    }
-//  }
-//}
+  console.log("HALF INNING OVER");
+
+  return totalbases;
+}
 
 /////////Master outcome functions//////////
-function abMaster(){
+function abMaster(totalbases){
   var roll;
   var value;
-  var outs;
-  var bases;
+  var bases = totalbases;
   var result;
+  var pass;
 
   roll = getRoll12();
 
   value = atBat(roll);
 
-  document.getElementById("roll12").disabled = true;
+  result = hitOrOut(value,totalbases);
 
-  result = hitOrOut(value,bases);
-
-  if (reslut<0){
-    outs = outs + -(result);
+  if (result<0){
+    pass = result;
   }else {
-    document.getElementById("roll20").disabled = false;
-    bases = bases + hitMaster();
+    pass = result;
   }
 
-  return outs;
+  return pass;
+}
 
+function hitOrOut(value,totalbases){
+  var next = value;
+  var bases = totalbases;
+  var result;
+
+  if (next === 2){
+    result = hitMaster();
+    return result;
+  }else if (next === 1){
+    result = 1;
+    return result;
+  }else if(next === 0){
+    if(bases < 1){
+      result = brEmptyMaster();
+      return result;
+    }else if(bases === 1){
+      result = br1Master();
+      return result;
+    }else if( bases === 2){
+      result = br2Master();
+      return result;
+    }else {
+      result = br3Master();
+      return result;
+    }
+  }
 }
 
 function hitMaster(){
@@ -56,17 +99,15 @@ function hitMaster(){
 
   value = typeHit(roll);
 
-  document.getElementById("roll20").disabled = true;
-
   return value;
 
 }
 
 function brEmptyMaster(){
   var roll = getRoll4();
-  var out = 1;
+  var out;
 
-  typeOutNoBr(roll);
+  out = typeOutNoBr(roll);
 
   return out;
 
@@ -74,9 +115,9 @@ function brEmptyMaster(){
 
 function br1Master(){
   var roll = getRoll6();
-  var out = 1;
+  var out;
 
-  typeOut1Br(roll);
+  out = typeOut1Br(roll);
 
   return out;
 
@@ -84,9 +125,9 @@ function br1Master(){
 
 function br2Master(){
   var roll = getRoll8();
-  var out = 1;
+  var out;
 
-  typeOut2Br(roll);
+  out = typeOut2Br(roll);
 
   return out;
 
@@ -94,44 +135,17 @@ function br2Master(){
 
 function br3Master(){
   var roll = getRoll10();
-  var out = 1;
+  var out;
 
-  typeOut3Br(roll);
+  out = typeOut3Br(roll);
 
   return out;
 
 }
 
-function hitOrOut(value,totalbases){
-  var next = value;
-  var bases = totalbases;
-
-  if (next === 2){
-    document.getElementById("roll20").disabled = false;
-    return document.getElementById("roll20").onclick;
-  }else if (next === 1){
-    document.getElementById("roll12").disabled = false;
-    return 1;
-  }else if(next === 0){
-    if(bases < 1){
-      document.getElementById("roll4").disabled = false;
-      return document.getElementById("roll4").onclick;
-    }
-    document.getElementById("roll12").disabled = false;
-
-  }
-
-}
-
 /////////Get rolls//////////
-function getPlayBall(){
-  var newgame = document.getElementById("start");
-
-}
 function getRoll4(){
   var roll4 = Math.ceil(Math.random()*4);
-
-  console.log(roll4);
 
   return roll4;
 }
@@ -139,15 +153,11 @@ function getRoll4(){
 function getRoll6(){
   var roll6 = Math.ceil(Math.random()*6);
 
-  console.log(roll6);
-
   return roll6;
 }
 
 function getRoll8(){
   var roll8 = Math.ceil(Math.random()*8);
-
-  console.log(roll8);
 
   return roll8;
 }
@@ -155,23 +165,17 @@ function getRoll8(){
 function getRoll10(){
   var roll10 = Math.ceil(Math.random()*10);
 
-  console.log(roll10);
-
   return roll10;
 }
 
 function getRoll12(){
   var roll12 = Math.ceil(Math.random()*12);
 
-  console.log(roll12, atBat(roll12));
-
   return roll12;
 }
 
 function getRoll20(){
   var roll20 = Math.ceil(Math.random()*20);
-
-  console.log(roll20, typeHit(roll20));
 
   return roll20;
 }
@@ -193,7 +197,7 @@ function atBat(roll){
     value = 2;
   }
 
-  console.log(roll,outcome)
+  console.log("roll12: "+roll+" "+"outcome: "+outcome);
 
 return value;
 }
@@ -217,7 +221,7 @@ function typeHit(roll){
     value = 4;
   }
 
-  console.log(roll,outcome)
+  console.log("roll20: "+roll+" "+"outcome: "+outcome);
 
   return value;
 }
@@ -225,23 +229,23 @@ function typeHit(roll){
 function typeOutNoBr(roll){
   var roll;
   var outcome;
-  var outs = 0;
+  var outs;
 
   if(roll === 1){
     outcome = "strikeout";
-    outs = 1;
+    outs = -1;
   }else if(roll === 2){
     outcome = "pop fly";
-    outs = 1;
+    outs = -1;
   }else if(roll === 3){
     outcome = "ground out";
-    outs = 1;
+    outs = -1;
   }else{
     outcome = "line out";
-    outs = 1;
+    outs = -1;
   }
 
-  console.log(outcome);
+  console.log("roll4: "+roll+" "+"outcome: "+outcome);
 
   return outs;
 }
@@ -253,22 +257,22 @@ function typeOut1Br(roll){
 
   if(roll <= 2){
     outcome = "strikeout";
-    outs = 1;
+    outs = -1;
   }else if(roll === 3){
     outcome = "pop fly";
-    outs = 1;
+    outs = -1;
   }else if(roll === 4){
     outcome = "ground out";
-    outs = 1;
+    outs = -1;
   }else if(roll === 5){
     outcome = "line out";
-    outs = 1;
+    outs = -1;
   }else{
     outcome = "double play";
-    outs = 2;
+    outs = -2;
   }
 
-  console.log(outcome);
+  console.log("roll6: "+roll+" "+"outcome: "+outcome);
 
   return outs;
 }
@@ -280,22 +284,22 @@ function typeOut2Br(roll){
 
   if(roll <= 2){
     outcome = "strikeout";
-    outs = 1;
+    outs = -1;
   }else if(roll <= 4){
     outcome = "pop fly";
-    outs = 1;
+    outs = -1;
   }else if(roll === 5){
     outcome = "ground out";
-    outs = 1;
+    outs = -1;
   }else if(roll === 6){
     outcome = "line out";
-    outs = 1;
+    outs = -1;
   }else{
     outcome = "double play";
-    outs = 2;
+    outs = -2;
   }
 
-  console.log(outcome);
+  console.log("roll8: "+roll+" "+"outcome: "+outcome);
 
   return outs;
 }
@@ -307,25 +311,24 @@ function typeOut3Br(roll){
 
   if(roll <= 3){
     outcome = "strikeout";
-    outs = 1;
+    outs = -1;
   }else if(roll <=5){
     outcome = "pop fly";
-    outs = 1;
+    outs = -1;
   }else if(roll === 6){
     outcome = "ground out";
-    outs = 1;
+    outs = -1;
   }else if(roll === 7){
-    outcome = "line out";
-    outs = 1;
+    outcome = "double play";
+    outs = -2;
   }else if(roll <= 9){
     outcome = "double play";
-    outs = 2;
+    outs = -2;
   }else{
     outcome = "triple play";
-    outs = 3;
+    outs = -3;
   }
 
-  console.log(outcome);
-
+  console.log("roll10: "+roll+" "+"outcome: "+outcome);
   return outs;
 }
