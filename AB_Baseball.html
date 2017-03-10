@@ -7,31 +7,31 @@
 	<body>
 		<div>
 			<h1>At-Bat Baseball</h1>
-				<p>A fully functional baseball-style simulation that utilizes
+				<p>A fully functional baseball simulation that utilizes
 						4, 6, 8, 10, 12, and 20 sided dice to determine the outcome of at-bats.
-						The goal of the game is to have the most total bases by the 9th inning.
+						Pick a team and hit "Play Ball!" to see if you win! Probabilities loosely
+						based on 2016 MLB game averages (batting average, on base percentage, etc).
 				</p>
 				<ul>
-					<li><strong>12-sided </strong>die determines whether an at-bat results in a <strong>hit, walk,
-						or out.</strong></li>
-					<li><strong>20-sided </strong>die determines whether a hit is a <strong>single, double, triple,
-						or homerun.</strong></li>
-					<li><strong>4-sided </strong>die determines the type of out while the batting team hasn't hit for
-						any total bases in the half-inning:<strong> strikeout, ground out, fly out, and
-						line out.</strong></li>
-					<li><strong>6-sided </strong>die determines the type of out while the batting team has hit for
-						at least 1 total base in the half-inning<strong> strikeout, ground out, fly out,
-						line out, and double play.</strong></li>
-					<li><strong>8-sided </strong>die determines the type of out while the batting team has hit for
-						at least 2 total bases in the half-inning:<strong> strikeout, ground out, fly out,
-						line out, and double play. </strong></li>
-					<li><strong>10-sided </strong>die determines the type of out while the batting team has hit for
-						at least 3 total bases in the half-inning:<strong> strikeout, ground out, fly out,
-						line out, double play, and triple play. </strong></li>
+					<li><strong>12-sided </strong>die determines whether an at-bat results in a <i>hit, walk,
+						or out.</i></li>
+					<li><strong>20-sided </strong>die determines whether a hit is a <i>single, double, triple,
+						or homerun.</i></li>
+					<li><strong>4-sided </strong>die determines the type of out if there are no baserunners:<i> strikeout, ground out, fly out, and
+						line out.</i></li>
+					<li><strong>6-sided </strong>die determines the type of out if there is one baserunner:<i> strikeout, ground out, fly out,
+						line out, and double play.</i></li>
+					<li><strong>8-sided </strong>die determines the type of if there are two baserunners:<i> strikeout, ground out, fly out,
+						line out, and double play. </i></li>
+					<li><strong>10-sided </strong>die determines the type of out if the bases are loaded:<i> strikeout, ground out, fly out,
+						line out, double play, and triple play. </i></li>
 				</ul>
-				<p>I'm working on the button functionality so you can actually "roll" to play the game.
+				<p>I'm working on the button functionality...so you can't actually "roll" the dice by pushing the buttons. :(
 				</p>
-				<p>Open the console to see the roll-by-roll outcome updates for each at-bat.
+				<p>Open the console to see the roll-by-roll outcome updates for hit/out type,
+						baserunners, and runs scored for each at-bat. There is also a score
+						update at the end of each half-inning.
+
 				</p>
 				<p>
 					<button id="start" enabled>Play Ball!</button>
@@ -66,7 +66,7 @@
 					<th>FINAL</th>
 				</tr>
 				<tr>
-					<td><strong>Team A</strong></td>
+					<td><strong>Away Team</strong></td>
 					<td id="A1"> </td>
 					<td id="A2"> </td>
 					<td id="A3"> </td>
@@ -79,7 +79,7 @@
 					<td id="AF"> </td>
 				</tr>
 				<tr>
-					<td><strong>Team B</strong></td>
+					<td><strong>Home Team</strong></td>
 					<td id="B1"> </td>
 					<td id="B2"> </td>
 					<td id="B3"> </td>
@@ -95,6 +95,7 @@
 
 			<p id="prompt"> </p>
 			<strong><p id="outcome"> </p></strong>
+			<p></p>
 			<p> <button id="clear" disabled> Clear </button> </p>
 		</div>
 

@@ -1,9 +1,15 @@
+//At-Bat baseball
+//A dice game to simulate an entire baeball game at the at-bat level.
+//Contains 30 (mostly pure) functions
+/////////////////////////////////////
+//Aaron Jermier 03/10/2017
+//Week 2 devCodeCamp project
+
 "use strict";
 
 main();
 
-/////////Game and Inning functions (majority of console/html output)///////////
-
+/////////Game and Inning functions///////////
 function gameMaster(){
   var runTotalA = 0;
   var runTotalB = 0;
@@ -12,19 +18,31 @@ function gameMaster(){
 
   for(inning; inning < 9;){
     inningRun = inningMaster();
+
     runTotalA = runTotalA + inningRun;
     inning = inning + 0.5;
-    endOfinningA(inning, runTotalA, runTotalB, inningRun); //update scoreboard for team A
+
+    endOfinningA(inning, runTotalA, runTotalB, inningRun); //update scoreboard for away team
+    if(inning === 7.5){ //skip the bottom of the 9th if home team winning
+      console.log("TAKE ME OUT TO THE BALL GAME...");
+      console.log("ROLL OUT THE BARREL...");
+    }
+    if((inning === 8.5) && (runTotalB > runTotalA)){ //skip the bottom of the 9th if home team winning
+      break;
+    }
+
     inningRun = inningMaster();
+
     runTotalB = runTotalB + inningRun;
     inning = inning + 0.5;
-    endOfinningB(inning, runTotalA, runTotalB, inningRun); //update scoreboard for team B
+
+    endOfinningB(inning, runTotalA, runTotalB, inningRun); //update scoreboard for home team
   }
 
   endOfGame(runTotalA, runTotalB); //update scoreboard determine winner
 
   reset();
-}
+} //loop through 9-innings
 
 function inningMaster(){
   var outs = 0;
@@ -35,6 +53,10 @@ function inningMaster(){
 
   for (outs; outs<3;){
     totalbases = abMaster(br);
+    if(totalbases === -2){
+      br[0]=0;
+      br[1]=0;
+    }
     if (totalbases < 0){
       outs = outs + -totalbases;
       if(outs>3){
@@ -47,13 +69,13 @@ function inningMaster(){
     }
 
     console.log("outs: ",outs);
-    console.log("total runs: ", runs);
+    console.log("runs: ", runs);
   }
 
   console.log("HALF INNING OVER");
 
   return totalruns;
-}
+} //loop through each half-inning at-bats
 
 /////////Master outcome functions//////////
 function abMaster(br){
@@ -68,7 +90,7 @@ function abMaster(br){
   result = hitOrOut(value,br);
 
   return result;
-}
+} //12-sided //determines hit, walk, or out
 
 function hitOrOut(value,br){
   var result;
@@ -89,7 +111,7 @@ function hitOrOut(value,br){
     }
   }
   return result;
-}
+} //determines which die to roll (hit die or out die)
 
 function hitMaster(){
   var roll;
@@ -101,7 +123,7 @@ function hitMaster(){
 
   return value;
 
-}
+} //determines type of hit (single, double, triple, homerun)
 
 function brEmptyMaster(){
   var roll = getRoll4();
@@ -111,7 +133,7 @@ function brEmptyMaster(){
 
   return out;
 
-}
+} //determines type of out with no baserunners
 
 function br1Master(){
   var roll = getRoll6();
@@ -121,7 +143,7 @@ function br1Master(){
 
   return out;
 
-}
+} //determines type of out with 1 baserunner
 
 function br2Master(){
   var roll = getRoll8();
@@ -131,7 +153,7 @@ function br2Master(){
 
   return out;
 
-}
+} //determines type of out with 2 baserunners
 
 function br3Master(){
   var roll = getRoll10();
@@ -141,35 +163,40 @@ function br3Master(){
 
   return out;
 
-}
+} //determines type of out with bases loaded
 
-function brUpdater(totalbases, br){ //converts total bases to runs
-  var newBr = [];
-  var i;
-
-  for(i=0; i<3; i++){
-    newBr[i] = br[i]+totalbases;
-  }
-  console.log(newBr);
-  return newBr;
-}
-
-function runConverter(totalbases, br){ //converts total bases to runs given current baserunners
+function runConverter(totalbases, br){ //determines runs scored given result of at bat and current baserunners
   var newBr = [];
   var runs = 0;
 
   newBr = brUpdater(totalbases, br);
 
-  if ((newBr[0] - br[0]) === 4){//homerun hit with no one on base
+  if((newBr[0]  === 4) && (newBr[1] === 4) && (newBr[2] === 4)){//homerun hit with no one on base
     runs = runs + 1;
-    }else if(newBr[0] > 3){//first occupied
+  }else if((newBr[0] > 4) && (newBr[1] === 4) && (newBr[2] === 4)){//homerun hit with first occupied
+    runs = runs + 2;
+  }else if((newBr[0] === 4) && (newBr[1] > 4) && (newBr[2] === 4)){//homerun hit with second occupied
+    runs = runs + 2;
+  }else if((newBr[0] === 4) && (newBr[1] === 4) && (newBr[2] > 4)){//homerun hit with third occupied
+    runs = runs + 2;
+  }else if((newBr[0] > 4) && (newBr[1] > 4) && (newBr[2] === 4)){//homerun hit with first and second occupied
+    runs = runs + 3;
+  }else if((newBr[0] > 4) && (newBr[1] === 4) && (newBr[2] > 4)){//homerun hit with first and third occupied
+    runs = runs + 3;
+  }else if((newBr[0] === 4) && (newBr[1] > 4) && (newBr[2] > 4)){//homerun hit with second and third occupied
+    runs = runs + 3;
+  }else if((newBr[0] > 4) && (newBr[1] > 4) && (newBr[2] > 4)){//homerun hit with bases loaded aka grand salami
+    runs = runs + 4;
+  }else{
+    if(newBr[0] > 3){//first occupied
       runs = runs + 1;
+      }
+    if(newBr[1] > 3){//second occupied
+      runs = runs + 1;
+      }
+    if(newBr[2] > 3){//third occupied
+    runs = runs + 1;
     }
-  if(newBr[1] > 3){//second occupied
-    runs = runs + 1;
-  }
-  if(newBr[2] > 3){//third occupied
-    runs = runs + 1;
   }
 
   return runs;
@@ -217,7 +244,17 @@ function brReset(totalbases,br){
       newBr[0] = 0;//turn first to 0
     }
 
-  console.log(newBr);
+  console.log("Baserunners: "+newBr);
+  return newBr;
+} //updates base runners//resets baserunners given result of at bat and current baserunners
+
+function brUpdater(totalbases, br){ //adds total bases to current baserunners
+  var newBr = [];
+  var i;
+
+  for(i=0; i<3; i++){
+    newBr[i] = br[i]+totalbases;
+  }
   return newBr;
 }
 
@@ -409,29 +446,30 @@ function typeOut3Br(roll){
   return outs;
 }
 
-function endOfinningA(inning, basesTotalA, basesTotalB, inningBt){
-  console.log("After "+inning+", "+" team A score: "+basesTotalA+", team B score: "+basesTotalB);
-  document.getElementById("A"+(inning+.5)).innerHTML = inningBt;
+//////////Console and scoreboard updaters//////////
+function endOfinningA(inning, runTotalA, runTotalB, inningRuns){
+  console.log("After "+inning+", "+" away: "+runTotalA+", home: "+runTotalB);
+  document.getElementById("A"+(inning+.5)).innerHTML = inningRuns;
 }
 
-function endOfinningB(inning, basesTotalA, basesTotalB, inningBt){
-  console.log("After "+inning+", "+" team A score: "+basesTotalA+", team B score: "+basesTotalB);
-  document.getElementById("B"+(inning)).innerHTML = inningBt;
+function endOfinningB(inning, runTotalA, runTotalB, inningRuns){
+  console.log("After "+inning+", "+" away: "+runTotalA+", home: "+runTotalB);
+  document.getElementById("B"+(inning)).innerHTML = inningRuns;
 }
 
-function endOfGame(basesTotalA, basesTotalB){
-  document.getElementById("AF").innerHTML = basesTotalA;
-  document.getElementById("BF").innerHTML = basesTotalB;
+function endOfGame(runTotalA, runTotalB){
+  document.getElementById("AF").innerHTML = runTotalA;
+  document.getElementById("BF").innerHTML = runTotalB;
   console.log("GAME OVER");
-  if(basesTotalA > basesTotalB){
-    console.log("Team A wins!");
-    document.getElementById("outcome").innerHTML = "Team A wins!";
-  }else if(basesTotalB > basesTotalA){
-    console.log("Team B wins!");
-    document.getElementById("outcome").innerHTML = "Team B wins!";
+  if(runTotalA > runTotalB){
+    console.log("Away team wins!");
+    document.getElementById("outcome").innerHTML = "AWAY TEAM WINS!";
+  }else if(runTotalB > runTotalA){
+    console.log("Home team wins!");
+    document.getElementById("outcome").innerHTML = "HOME TEAM WINS!";
   }else{
   console.log("The game ends in a tie!")
-  document.getElementById("outcome").innerHTML = "It's a tie!";
+  document.getElementById("outcome").innerHTML = "IT'S A TIE!";
   }
   document.getElementById("clear").disabled = false;
   document.getElementById("start").disabled = true;
