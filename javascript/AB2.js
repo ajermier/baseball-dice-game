@@ -5,23 +5,23 @@ main();
 /////////Game and Inning functions (majority of console/html output)///////////
 
 function gameMaster(){
-  var basesTotalA = 0;
-  var basesTotalB = 0;
+  var runTotalA = 0;
+  var runTotalB = 0;
   var inning = 0;
-  var inningBt;
+  var inningRun;
 
   for(inning; inning < 9;){
-    inningBt = inningMaster();
-    basesTotalA = basesTotalA + inningBt;
+    inningRun = inningMaster();
+    runTotalA = runTotalA + inningRun;
     inning = inning + 0.5;
-    endOfinningA(inning, basesTotalA, basesTotalB, inningBt); //update scoreboard for team A
-    inningBt = inningMaster();
-    basesTotalB = basesTotalB + inningBt;
+    endOfinningA(inning, runTotalA, runTotalB, inningRun); //update scoreboard for team A
+    inningRun = inningMaster();
+    runTotalB = runTotalB + inningRun;
     inning = inning + 0.5;
-    endOfinningB(inning, basesTotalA, basesTotalB, inningBt); //update scoreboard for team B
+    endOfinningB(inning, runTotalA, runTotalB, inningRun); //update scoreboard for team B
   }
 
-  endOfGame(basesTotalA, basesTotalB); //update scoreboard determine winner
+  endOfGame(runTotalA, runTotalB); //update scoreboard determine winner
 
   reset();
 }
@@ -29,77 +29,66 @@ function gameMaster(){
 function inningMaster(){
   var outs = 0;
   var totalbases = 0;
-  var value;
+  var totalruns = 0;
+  var runs = 0;
+  var br = [0,0,0];
 
   for (outs; outs<3;){
-    value = abMaster(totalbases);
-    if (value < 0){
-      outs = outs + -value;
+    totalbases = abMaster(br);
+    if (totalbases < 0){
+      outs = outs + -totalbases;
       if(outs>3){
         outs = 3;
       }
     }else{
-      totalbases = totalbases + value;
+      runs = runConverter(totalbases, br);
+      br = brReset(totalbases, br);
+      totalruns = totalruns + runs;
     }
 
     console.log("outs: ",outs);
-    console.log("total bases: ", totalbases);
+    console.log("total runs: ", runs);
   }
 
   console.log("HALF INNING OVER");
 
-  return totalbases;
+  return totalruns;
 }
 
 /////////Master outcome functions//////////
-function abMaster(totalbases){
+function abMaster(br){
   var roll;
   var value;
-  var bases = totalbases;
   var result;
-  var pass;
 
   roll = getRoll12();
 
   value = atBat(roll);
 
-  result = hitOrOut(value,totalbases);
+  result = hitOrOut(value,br);
 
-  if (result<0){
-    pass = result;
-  }else {
-    pass = result;
-  }
-
-  return pass;
+  return result;
 }
 
-function hitOrOut(value,totalbases){
-  var next = value;
-  var bases = totalbases;
+function hitOrOut(value,br){
   var result;
 
-  if (next === 2){
+  if (value === 2){ //hit
     result = hitMaster();
-    return result;
-  }else if (next === 1){
+  }else if (value === 1){ //walk
     result = 1;
-    return result;
-  }else if(next === 0){
-    if(bases < 1){
+  }else if(value === 0){ //out
+    if(br[0] === 0 && br[1] === 0 && br[2] === 0){ //no baserunners
       result = brEmptyMaster();
-      return result;
-    }else if(bases === 1){
+    }else if((br[0] === 1 && br[1] === 0 && br[2] === 0) || (br[0] === 0 && br[1] === 2 && br[2] === 0) || (br[0] === 0 && br[1] === 0 && br[2] === 3)){ //one baserunner
       result = br1Master();
-      return result;
-    }else if( bases === 2){
+    }else if((br[0] === 1 && br[1] === 2 && br[2] === 0) || (br[0] === 0 && br[1] === 2 && br[2] === 3)){ //two baserunners
       result = br2Master();
-      return result;
-    }else {
+    }else if(br[0] === 1 && br[1] === 2 && br[2] === 3){ //bases loaded
       result = br3Master();
-      return result;
     }
   }
+  return result;
 }
 
 function hitMaster(){
@@ -152,6 +141,84 @@ function br3Master(){
 
   return out;
 
+}
+
+function brUpdater(totalbases, br){ //converts total bases to runs
+  var newBr = [];
+  var i;
+
+  for(i=0; i<3; i++){
+    newBr[i] = br[i]+totalbases;
+  }
+  console.log(newBr);
+  return newBr;
+}
+
+function runConverter(totalbases, br){ //converts total bases to runs given current baserunners
+  var newBr = [];
+  var runs = 0;
+
+  newBr = brUpdater(totalbases, br);
+
+  if ((newBr[0] - br[0]) === 4){//homerun hit with no one on base
+    runs = runs + 1;
+    }else if(newBr[0] > 3){//first occupied
+      runs = runs + 1;
+    }
+  if(newBr[1] > 3){//second occupied
+    runs = runs + 1;
+  }
+  if(newBr[2] > 3){//third occupied
+    runs = runs + 1;
+  }
+
+  return runs;
+}
+
+function brReset(totalbases,br){
+  var newBr = [];
+
+  newBr = brUpdater(totalbases, br);
+
+  if ((br[2] === 3) && (newBr[3] === 4)){ //if third was occupied and a walk or single
+    newBr[2] = 3; //third remains occupied (single assumes infield single)
+  }else if (newBr[2] !== 3){ //if third base doesn't have a 3 empty it
+    newBr[2] = 0;
+  }
+
+  if (((br[1] === 2) && (newBr[1] === 3)) && ((br[0] === 1) && (newBr[0] === 2))){// if first and second occupied and a single or walk
+      newBr[0] = 1;
+      newBr[1] = 2;
+      newBr[2] = 3;
+    }
+
+  if ((br[1] === 2) && (newBr[1] === 3)){ //if second was occupied and a single or walk
+    newBr[1] = 2; //second remains occupied
+  }else if ((br[1] === 2) && (newBr[1] === 4)){//if second was occupied and a double
+    newBr[1] = 2; //second remains occupied
+    newBr[2] = 0;
+  }else if (newBr[1] === 3){ //if second has a 3
+    newBr[2] = 3;//turn third to 3
+    newBr[1] = 0;//turn second to 0
+  }else if (newBr[1] !== 2){ //if second doesn't have a 2
+    newBr[1] = 0; //turn second to 0
+  }
+
+  if ((br[0] === 1) && (newBr[0] === 2)){ //if first was occupied and a single or walk
+      newBr[0] = 1; //first remains occupied
+      newBr[1] = 2; //second becomes occupied
+    }else if (newBr[0] === 3){//if first has a 3
+      newBr[2] = 3;//turn third to 3
+      newBr[0] = 0;//turn first to 0
+    }else if (newBr[0] === 2){//if first has a 2
+      newBr[1] = 2;//turn second to 2
+      newBr[0] = 0;//turn first to a 0
+    }else if (newBr[0] !== 1){//if first has a 1
+      newBr[0] = 0;//turn first to 0
+    }
+
+  console.log(newBr);
+  return newBr;
 }
 
 /////////Get rolls//////////
