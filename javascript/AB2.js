@@ -14,32 +14,16 @@ function gameMaster(){
     inningBt = inningMaster();
     basesTotalA = basesTotalA + inningBt;
     inning = inning + 0.5;
-    console.log("After "+inning+", "+" team A score: "+basesTotalA+", team B score: "+basesTotalB);
-    document.getElementById("A"+(inning+.5)).innerHTML = inningBt;
+    endOfinningA(inning, basesTotalA, basesTotalB, inningBt); //update scoreboard for team A
     inningBt = inningMaster();
     basesTotalB = basesTotalB + inningBt;
     inning = inning + 0.5;
-    console.log("After "+inning+", "+" team A score: "+basesTotalA+", team B score: "+basesTotalB);
-    document.getElementById("B"+(inning)).innerHTML = inningBt;
-    //alert("After "+inning+", "+" team A score: "+basesTotalA+", team B score: "+basesTotalB);
+    endOfinningB(inning, basesTotalA, basesTotalB, inningBt); //update scoreboard for team B
   }
-  document.getElementById("AF").innerHTML = basesTotalA;
-  document.getElementById("BF").innerHTML = basesTotalB;
-  console.log("GAME OVER");
-  if(basesTotalA > basesTotalB){
-    console.log("Team A wins!");
-    document.getElementById("outcome").innerHTML = "Team A wins!";
-  }else if(basesTotalB > basesTotalA){
-    console.log("Team B wins!");
-    document.getElementById("outcome").innerHTML = "Team B wins!";
-  }else{
-  console.log("The game ends in a tie!")
-  document.getElementById("outcome").innerHTML = "It's a tie!";
-  }
-  document.getElementById("clear").disabled = false;
-  document.getElementById("start").disabled = true;
-  reset();
 
+  endOfGame(basesTotalA, basesTotalB); //update scoreboard determine winner
+
+  reset();
 }
 
 function inningMaster(){
@@ -356,6 +340,34 @@ function typeOut3Br(roll){
 
   console.log("roll10: "+roll+" "+"outcome: "+outcome);
   return outs;
+}
+
+function endOfinningA(inning, basesTotalA, basesTotalB, inningBt){
+  console.log("After "+inning+", "+" team A score: "+basesTotalA+", team B score: "+basesTotalB);
+  document.getElementById("A"+(inning+.5)).innerHTML = inningBt;
+}
+
+function endOfinningB(inning, basesTotalA, basesTotalB, inningBt){
+  console.log("After "+inning+", "+" team A score: "+basesTotalA+", team B score: "+basesTotalB);
+  document.getElementById("B"+(inning)).innerHTML = inningBt;
+}
+
+function endOfGame(basesTotalA, basesTotalB){
+  document.getElementById("AF").innerHTML = basesTotalA;
+  document.getElementById("BF").innerHTML = basesTotalB;
+  console.log("GAME OVER");
+  if(basesTotalA > basesTotalB){
+    console.log("Team A wins!");
+    document.getElementById("outcome").innerHTML = "Team A wins!";
+  }else if(basesTotalB > basesTotalA){
+    console.log("Team B wins!");
+    document.getElementById("outcome").innerHTML = "Team B wins!";
+  }else{
+  console.log("The game ends in a tie!")
+  document.getElementById("outcome").innerHTML = "It's a tie!";
+  }
+  document.getElementById("clear").disabled = false;
+  document.getElementById("start").disabled = true;
 }
 
 //////////Administrative buttons (start/clear) management//////////
