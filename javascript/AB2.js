@@ -54,7 +54,7 @@ function getInningResults(){ //repeats at-bats while outs are <3
     outs = UpdateOuts(totalBases, outs);
     atBatRuns = UpdateRuns(totalBases, currentBaseRunners, atBatRuns);
     totalruns = totalruns + atBatRuns;
-    currentBaseRunners = baseRunnersReset(totalBases, currentBaseRunners);
+    currentBaseRunners = resetBaseRunners(totalBases, currentBaseRunners);
     endOfAtBatOutput(outs, atBatRuns, currentBaseRunners);
   }
 
@@ -116,7 +116,7 @@ function getRuns(totalBases, currentBaseRunners){ //determines runs scored given
   var newBaseRunners = [];
   var runs = 0;
 
-  newBaseRunners = baseRunnerUpdater(totalBases, currentBaseRunners);
+  newBaseRunners = updateBaseRunners(totalBases, currentBaseRunners);
 
   if((newBaseRunners[0]  === 4) && (newBaseRunners[1] === 4) && (newBaseRunners[2] === 4)){//homerun hit with no one on base
     runs = runs + 1;
@@ -150,10 +150,10 @@ function getRuns(totalBases, currentBaseRunners){ //determines runs scored given
   return runs;
 }
 
-function baseRunnersReset(totalBases,currentBaseRunners){
+function resetBaseRunners(totalBases,currentBaseRunners){
   var newBaseRunners = [];
 
-  newBaseRunners = baseRunnerUpdater(totalBases, currentBaseRunners);
+  newBaseRunners = updateBaseRunners(totalBases, currentBaseRunners);
 
   newBaseRunners = UpdateThirdOccupied(totalBases, currentBaseRunners, newBaseRunners);
   newBaseRunners = UpdateSecondAndFirstOccupied(totalBases, currentBaseRunners, newBaseRunners);
@@ -164,7 +164,7 @@ function baseRunnersReset(totalBases,currentBaseRunners){
   return newBaseRunners;
 }
 
-function baseRunnerUpdater(totalBases, currentBaseRunners){ //adds total bases to current baserunners
+function updateBaseRunners(totalBases, currentBaseRunners){ //adds total bases to current baserunners
   var newBaseRunners = [];
   var i;
 
